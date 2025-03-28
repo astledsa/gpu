@@ -9,7 +9,6 @@ import type {
   GPUNodeMetrics,
   GPUMultiNodeMetrics,
   RooflineData,
-  Metrics
 } from './types'
 
 export class Matrix {
@@ -142,7 +141,7 @@ export class TPUv5e {
     return matrix.id;
   }
 
-  performanceMetrics(Id: string, mN: boolean = false, sC: ShardingConfig | null = null): Metrics {
+  performanceMetrics(Id: string, mN: boolean = false, sC: ShardingConfig | null = null) {
     const matrix = this.matrices.find(m => m.id === Id);
     if (!matrix) {
       throw new Error(`Matrix with ID ${Id} not found`);
@@ -431,7 +430,7 @@ export class H100 {
     return matrix.id;
   }
 
-  performanceMetrics(matrixId: string, multiNode: boolean = false, shardingConfig: ShardingConfig | null = null): Metrics {
+  performanceMetrics(matrixId: string, multiNode: boolean = false, shardingConfig: ShardingConfig | null = null) {
 
     const matrix = this.matrices.find(m => m.id === matrixId);
     if (!matrix) {

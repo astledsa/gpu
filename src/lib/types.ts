@@ -105,10 +105,9 @@ export interface GPUMultiNodeMetrics {
     scalingEfficiency: number
 }
 
-export interface Metrics {
-    singleNode: GPUNodeMetrics | TPUNodeMetrics
-    multiNode: GPUMultiNodeMetrics | TPUMultiNodeMetrics | null
-}
+export type singleNodeMetrics = GPUNodeMetrics | TPUNodeMetrics
+export type multiNodeMetrics = GPUMultiNodeMetrics | TPUMultiNodeMetrics
+
 
 export interface RooflineData {
     intensityPoints: {
