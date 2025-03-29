@@ -6,6 +6,7 @@
             type matinfo,
       } from "$lib/types";
       import { H100 } from "$lib/classes";
+      import Form from "$lib/components/form.svelte";
       import Analyse from "$lib/components/analyse.svelte";
       import MatrixElement from "$lib/components/matrix.svelte";
       import HardwareElement from "$lib/components/hardware.svelte";
@@ -24,7 +25,9 @@
       let bShape: [number, number] = [0, 0];
       let sharddim: [number, number] = [0, 0];
 
-      function convertSecondsToSmallerOrLargerUnits(seconds: number,): [number, string] {
+      function convertSecondsToSmallerOrLargerUnits(
+            seconds: number,
+      ): [number, string] {
             if (Math.abs(seconds) >= 86400) {
                   return [Math.round(seconds / 86400), "days"];
             } else if (Math.abs(seconds) >= 3600) {
@@ -58,21 +61,33 @@
                         dtype: format,
                   });
 
-                  let metrics: GPUNodeMetrics =
-                        h100.performanceMetrics(id).singleNode;
+                  let { m, r, d } = h100.analyze(id);
 
-                  memoryTime = convertSecondsToSmallerOrLargerUnits(metrics.memoryTime);
-                  computeTime = convertSecondsToSmallerOrLargerUnits(metrics.computeTime);
-                  arithmeticIntensity = Math.round(metrics.arithmeticIntensity);
-                  hardwareIntensity = Math.round(metrics.peakHardwareIntensity);
-                  totalFLOPs = metrics.totalFLOPs;
+                  memoryTime = convertSecondsToSmallerOrLargerUnits(
+                        m.memoryTime,
+                  );
+                  computeTime = convertSecondsToSmallerOrLargerUnits(
+                        m.computeTime,
+                  );
+                  arithmeticIntensity = Math.round(m.arithmeticIntensity);
+                  hardwareIntensity = Math.round(m.peakHardwareIntensity);
+                  totalFLOPs = m.totalFLOPs;
+                  recommendations = r;
+
+                  console.log(d);
 
                   analyseIspressed = true;
             }
       }
+
+      const temperatures = [22, 24, 19, 17, 21, 25];
+      const rainfall = [5, 10, 15, 20, 10, 5];
+      const humidity = [60, 65, 70, 75, 80, 70];
+      const wind = [10, 15, 20, 15, 10, 5];
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 </script>
 
-{#if !analyseIspressed}
+<!-- {#if !analyseIspressed}
       <div class="container">
             <div class="main">
                   <MatrixElement {format} {aShape} {bShape} />
@@ -89,7 +104,21 @@
             {totalFLOPs}
             {recommendations}
       />
-{/if}
+{/if} -->
+
+<Form
+      data1={temperatures}
+      data2={rainfall}
+      data3={humidity}
+      data4={wind}
+      labels={days}
+      titles={[
+            "Temperature (°C)",
+            "Rainfall (mm)",
+            "Humidity (%)",
+            "Wind Speed (km/h)",
+      ]}
+/>
 
 <style>
       :global(body) {
