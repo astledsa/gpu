@@ -2,28 +2,26 @@
       import {
             dtype,
             operation,
-            type GPUNodeMetrics,
             type matinfo,
       } from "$lib/types";
       import { H100 } from "$lib/classes";
-      import Form from "$lib/components/form.svelte";
       import Analyse from "$lib/components/analyse.svelte";
       import MatrixElement from "$lib/components/matrix.svelte";
       import HardwareElement from "$lib/components/hardware.svelte";
 
-      let memoryTime: [number, string] = [0, "seconds"];
-      let computeTime: [number, string] = [0, "seconds"];
-      let arithmeticIntensity: number = 0;
-      let hardwareIntensity: number = 0;
       let totalFLOPs: number = 0;
-      let recommendations: string[] = [""];
       let numdevices: number = 1;
       let machine: string = "H100";
       let format: dtype = dtype.bf16;
+      let hardwareIntensity: number = 0;
+      let arithmeticIntensity: number = 0;
+      let recommendations: string[] = [""];
       let analyseIspressed: boolean = false;
       let aShape: [number, number] = [0, 0];
       let bShape: [number, number] = [0, 0];
       let sharddim: [number, number] = [0, 0];
+      let memoryTime: [number, string] = [0, "s"];
+      let computeTime: [number, string] = [0, "s"];
 
       function convertSecondsToSmallerOrLargerUnits(
             seconds: number,
@@ -73,21 +71,14 @@
                   hardwareIntensity = Math.round(m.peakHardwareIntensity);
                   totalFLOPs = m.totalFLOPs;
                   recommendations = r;
-
-                  console.log(d);
-
+                  
                   analyseIspressed = true;
             }
       }
 
-      const temperatures = [22, 24, 19, 17, 21, 25];
-      const rainfall = [5, 10, 15, 20, 10, 5];
-      const humidity = [60, 65, 70, 75, 80, 70];
-      const wind = [10, 15, 20, 15, 10, 5];
-      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 </script>
 
-<!-- {#if !analyseIspressed}
+{#if !analyseIspressed}
       <div class="container">
             <div class="main">
                   <MatrixElement {format} {aShape} {bShape} />
@@ -104,21 +95,7 @@
             {totalFLOPs}
             {recommendations}
       />
-{/if} -->
-
-<Form
-      data1={temperatures}
-      data2={rainfall}
-      data3={humidity}
-      data4={wind}
-      labels={days}
-      titles={[
-            "Temperature (°C)",
-            "Rainfall (mm)",
-            "Humidity (%)",
-            "Wind Speed (km/h)",
-      ]}
-/>
+{/if}
 
 <style>
       :global(body) {

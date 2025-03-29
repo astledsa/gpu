@@ -54,8 +54,6 @@
       .container {
             padding: 0;
             margin: 0;
-            max-width: 100vh;
-            max-width: 100vw;
             display: flex;
             align-items: center;
             justify-content: center;

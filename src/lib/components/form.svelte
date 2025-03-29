@@ -1,20 +1,15 @@
 <script lang="ts">
       export let data1: number[] = [];
       export let data2: number[] = [];
-      export let data3: number[] = [];
-      export let data4: number[] = [];
       export let labels: string[] = [];
-      export let titles = ["Graph 1", "Graph 2", "Graph 3", "Graph 4"];
+      export let titles = ["", "", "", ""];
       export let colors = ["#000000", "#000000", "#000000", "#000000"];
       export let width = 400;
       export let height = 300;
       export let padding = 40;
 
-      // Calculate graph dimensions without padding
       $: graphWidth = width - padding * 2;
       $: graphHeight = height - padding * 2;
-
-      // Helper functions for graph calculations
       function getMaxValue(array: number[]) {
             return Math.max(...array) || 1;
       }
@@ -73,14 +68,12 @@
 </script>
 
 <div class="graph-container">
-      {#each [data1, data2, data3, data4] as data, index}
+      {#each [data1, data2] as data, index}
             <div class="graph-wrapper">
                   <h3>{titles[index]}</h3>
                   <svg class="graph" {width} {height}>
-                        <!-- Graph background -->
                         <rect {width} {height} fill="#f8f9fa" />
 
-                        <!-- X axis -->
                         <line
                               x1={padding}
                               y1={padding + graphHeight}
@@ -90,7 +83,6 @@
                               stroke-width="1"
                         />
 
-                        <!-- Y axis -->
                         <line
                               x1={padding}
                               y1={padding}
@@ -100,7 +92,6 @@
                               stroke-width="1"
                         />
 
-                        <!-- Grid lines -->
                         {#each [0.25, 0.5, 0.75, 1] as fraction}
                               <line
                                     x1={padding}
@@ -113,14 +104,12 @@
                               />
                         {/each}
 
-                        <!-- Area fill -->
                         <path
                               d={createAreaPath(data, colors[index])}
                               fill={colors[index] + "33"}
                               stroke="none"
                         />
 
-                        <!-- Line -->
                         <path
                               d={createPath(data, colors[index])}
                               fill="none"
@@ -128,12 +117,10 @@
                               stroke-width="2"
                         />
 
-                        <!-- Data points -->
                         {#each createCircles(data, colors[index]) as circle}
                               <circle {...circle} />
                         {/each}
 
-                        <!-- Labels -->
                         {#if labels.length === data.length}
                               {#each labels as label, i}
                                     <text
@@ -157,13 +144,13 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            max-width: 65%;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 20px;
-            margin: 20px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid black;
             box-shadow: 5px 5px 0px 1px black;
+            background: white;
+            padding: 10px;
+            width: 60%;
+            margin: 2% auto;
       }
 
       .graph-wrapper {
